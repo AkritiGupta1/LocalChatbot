@@ -25,16 +25,8 @@ class LocalChatbotGUI:
         """Setup the user interface."""
         # Window configuration
         self.root.title("LocalChatbot - File System Explorer")
-        self.root.geometry("1000x700")
-        self.root.minsize(800, 500)
-        
-        # Configure style
-        style = ttk.Style()
-        style.theme_use('clam')
-        
-        # Configure colors
-        bg_color = "#f0f0f0"
-        self.root.configure(bg=bg_color)
+        self.root.geometry("1100x750")
+        self.root.minsize(900, 600)
         
         # Main container
         main_container = ttk.Frame(self.root, padding="10")
@@ -65,19 +57,15 @@ class LocalChatbotGUI:
         # Title
         title_label = tk.Label(
             header_frame,
-            text="🤖 LocalChatbot - File System Explorer",
-            font=("Segoe UI", 18, "bold"),
-            bg="#f0f0f0",
-            fg="#2c3e50"
+            text="LocalChatbot - File System Explorer",
+            font=("Segoe UI", 14, "bold")
         )
         title_label.grid(row=0, column=0, sticky=tk.W)
         
         subtitle_label = tk.Label(
             header_frame,
             text="Explore files and folders on your system",
-            font=("Segoe UI", 10),
-            bg="#f0f0f0",
-            fg="#7f8c8d"
+            font=("Segoe UI", 10)
         )
         subtitle_label.grid(row=1, column=0, sticky=tk.W)
     
@@ -126,7 +114,7 @@ class LocalChatbotGUI:
         fetch_btn.grid(row=0, column=3)
         
         ttk.Label(parent, text="Note: Enter complete file path and click 'Get File Info'").grid(
-            row=1, column=0, sticky=tk.W, pady=(0, 5), foreground="#7f8c8d")
+            row=1, column=0, sticky=tk.W, pady=(0, 5))
     
     def create_folder_tab(self, parent):
         """Create folder browser tab."""
@@ -214,11 +202,11 @@ class LocalChatbotGUI:
         search_btn.grid(row=0, column=5)
         
         ttk.Label(parent, text="Use wildcards: * (any), ? (single char)").grid(
-            row=1, column=0, sticky=tk.W, pady=(0, 5), foreground="#7f8c8d")
+            row=1, column=0, sticky=tk.W, pady=(0, 5))
     
     def create_output_area(self, parent):
         """Create output display area."""
-        output_frame = ttk.LabelFrame(parent, text="📋 Output", padding="5")
+        output_frame = ttk.LabelFrame(parent, text="Output", padding="5")
         output_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         output_frame.columnconfigure(0, weight=1)
         output_frame.rowconfigure(0, weight=1)
