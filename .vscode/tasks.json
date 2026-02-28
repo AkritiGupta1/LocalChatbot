@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run LocalChatbot",
+            "type": "shell",
+            "command": "cd \"${workspaceFolder}\"; python src/chatbot.py",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        },
+        {
+            "label": "Run GUI",
+            "type": "shell",
+            "command": "cd \"${workspaceFolder}\"; python src/chatbot_gui.py",
+            "group": {
+                "kind": "build"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "cd \"${workspaceFolder}\"; python test_chatbot.py",
+            "group": {
+                "kind": "test"
+            }
+        }
+    ]
+}

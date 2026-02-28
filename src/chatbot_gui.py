@@ -93,6 +93,11 @@ class LocalChatbotGUI:
         search_tab = ttk.Frame(notebook, padding="10")
         notebook.add(search_tab, text="🔍 Search Files")
         self.create_search_tab(search_tab)
+        
+        # Tab 5: Find Similar Files
+        similar_tab = ttk.Frame(notebook, padding="10")
+        notebook.add(similar_tab, text="🎯 Similar Files")
+        self.create_similar_files_tab(similar_tab)
     
     def create_file_info_tab(self, parent):
         """Create file information tab."""
@@ -204,6 +209,36 @@ class LocalChatbotGUI:
         ttk.Label(parent, text="Use wildcards: * (any), ? (single char)").grid(
             row=1, column=0, sticky=tk.W, pady=(0, 5))
     
+    def create_similar_files_tab(self, parent):
+        """Create similar files tab with chat-like interface."""
+        # Instructions
+        info_frame = ttk.LabelFrame(parent, text="💬 Chat Format Search", padding="5")
+        info_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        ttk.Label(info_frame, text="Select a file to find all similar files (same extension) in its parent directory.").grid(
+            row=0, column=0, sticky=tk.W, padx=(0, 5))
+        
+        # Input frame
+        input_frame = ttk.Frame(parent)
+        input_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        input_frame.columnconfigure(1, weight=1)
+        
+        ttk.Label(input_frame, text="File Path:").grid(row=0, column=0, padx=(0, 5))
+        self.similar_file_entry = ttk.Entry(input_frame)
+        self.similar_file_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 5))
+        
+        browse_btn = ttk.Button(input_frame, text="Browse", 
+                               command=lambda: self.browse_file(self.similar_file_entry))
+        browse_btn.grid(row=0, column=2, padx=(0, 5))
+        
+        search_btn = ttk.Button(input_frame, text="Find Similar Files", 
+                               command=self.fetch_similar_files)
+        search_btn.grid(row=0, column=3)
+        
+        example_label = tk.Label(parent, text="Example: Select a .txt file to find all .txt files in its directory",
+                                 fg="#7f8c8d", font=("Segoe UI", 9))
+        example_label.grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
+    
     def create_output_area(self, parent):
         """Create output display area."""
         output_frame = ttk.LabelFrame(parent, text="Output", padding="5")
@@ -302,6 +337,17 @@ class LocalChatbotGUI:
         
         result = self.analyzer.search_files(directory, pattern)
         self.display_result(result, "Search Results")
+    
+    def fetch_similar_files(self):
+        """Fetch and display similar files."""
+        file_path = self.similar_file_entry.get().strip()
+        
+        if not file_path:
+            self.display_output("❌ Please select a file", "error")
+            return
+        
+        result = self.analyzer.find_similar_files(file_path)
+        self.display_result(result, "Similar Files Found")
     
     def display_result(self, result, title):
         """Format and display result."""

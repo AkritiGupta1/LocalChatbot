@@ -175,3 +175,53 @@ class FileAnalyzer:
             }
         except Exception as e:
             return {"error": str(e)}
+    
+    @staticmethod
+    def find_similar_files(file_path):
+        """
+        Find all files with the same extension in the parent directory.
+        
+        Args:
+            file_path (str): Path to the reference file
+            
+        Returns:
+            dict: Similar files found
+        """
+        try:
+            file = Path(file_path)
+            
+            if not file.exists():
+                return {"error": f"File not found: {file_path}"}
+            
+            if not file.is_file():
+                return {"error": f"Not a file: {file_path}"}
+            
+            parent_dir = file.parent
+            file_extension = file.suffix
+            
+            if not file_extension:
+                return {"error": "File has no extension"}
+            
+            similar_files = []
+            for item in parent_dir.rglob(f"*{file_extension}"):
+                if item.is_file():
+                    file_size = item.stat().st_size / 1024  # KB
+                    similar_files.append({
+                        "name": item.name,
+                        "path": str(item.absolute()),
+                        "size_kb": f"{file_size:.2f}",
+                        "parent": str(item.parent)
+                    })
+            
+            # Sort by name
+            similar_files.sort(key=lambda x: x["name"])
+            
+            return {
+                "reference_file": file.name,
+                "extension": file_extension,
+                "parent_directory": str(parent_dir.absolute()),
+                "similar_files": similar_files,
+                "count": len(similar_files)
+            }
+        except Exception as e:
+            return {"error": str(e)}
